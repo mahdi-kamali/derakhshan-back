@@ -1,13 +1,15 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 
 export const ServerMiddleWres = {
   errors: {
-    internal: async (err: any, req: Request, res: Response) => {
+    internal: async (
+      err: any,
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => {
       const status = err?.status;
-      res
-        .status(500)
-        .status(status || 500)
-        .json(err);
+      res.status(status || 500).json(err);
     },
   },
 };

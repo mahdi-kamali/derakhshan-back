@@ -84,6 +84,12 @@ export class AppRouter {
     return this;
   }
 
+  public PUT<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {
+    const { path } = props;
+    this.router.put(path, this.MiddleWares(props));
+    return this;
+  }
+
   public use(
     path: string,
     middleWare: (req: Request, res: Response, next: NextFunction) => void,

@@ -1,25 +1,17 @@
 import { AppRouter } from "@src/base/AppRouter";
 import { AdminMiddleWares } from "@src/middlewares/admin.middlewares";
-import UserModel, { IUser } from "@src/models/user/User.model";
+import usersRouter from "./users/users.router";
+import layoutRouter from "./layouts/layout.router";
+import galleryRouter from "./gallery/gallery.router";
 
 const AdminRouter = new AppRouter();
 
 AdminRouter.use("/", AdminMiddleWares.isAdmin);
 
-AdminRouter.GET<any, IUser[]>({
-  path: "/users",
-  async onStart(data, callBacks, utils) {},
-  async onProccess(data, callBacks, utils) {
-    const users = await UserModel.find();
-    return users;
-  },
-  async onFinish(request, data, callBacks, utils) {
-    return {
-      data: data,
-      message: "لیست کاربران با موفقیت دریافت شد",
-      status: "OK",
-    };
-  },
-});
+AdminRouter.use("/users", usersRouter);
+
+AdminRouter.use("/layouts", layoutRouter);
+
+AdminRouter.use("/gallery", galleryRouter);
 
 export default AdminRouter.getRouter();
