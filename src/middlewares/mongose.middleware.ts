@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { MongooseErrorMessages } from "./errors.mongos";
+import { MongooseErrorMessages } from "../db/errors.mongos";
 
 export const MongooseMiddleWares = {
   errors: {
@@ -37,6 +37,26 @@ export const MongooseMiddleWares = {
         const result = {
           // @ts-ignore
           data: MongooseErrorMessages[field].unique,
+          message: "خطایی رخ داده است",
+          status: "BAD_REQUEST",
+        };
+
+        return res.status(400).json(result);
+      }
+
+      return next(err);
+    },
+    objectIdError: (
+      err: any,
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => {
+      if (err.kind === "ObjectId") {
+        const field = err.path;
+
+        const result = {
+          data: MongooseErrorMessages.object._id.replace("{field}", field),
           message: "خطایی رخ داده است",
           status: "BAD_REQUEST",
         };

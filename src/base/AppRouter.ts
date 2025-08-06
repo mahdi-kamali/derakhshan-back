@@ -1,5 +1,6 @@
 import { JWT } from "@src/common/util/jwt";
-import { MongooseMiddleWares } from "@src/db/mongose.middleware";
+import { MongooseMiddleWares } from "@src/middlewares/mongose.middleware";
+import { MulterMiddleWare } from "@src/middlewares/multer.middlewares";
 import { ServerMiddleWres } from "@src/middlewares/server.middlewares";
 import { ICallBacks, IMethodProps, IUtills } from "@src/types/Router";
 import {
@@ -18,7 +19,7 @@ export class AppRouter {
   }
 
   private MiddleWares<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {
-    const { onStart, onFinish, onProccess } = props;
+    const { onStart, onFinish, onProccess, multer } = props;
 
     const CallBacks: ICallBacks = {
       onError(err) {
@@ -37,39 +38,87 @@ export class AppRouter {
       },
     };
 
+    const FilesMiddleWare = async (
+      request: Request,
+      response: Response,
+      next: NextFunction,
+    ) => {
+      if (!request.files || !multer) {
+        return next();
+      }
+
+      const { fields } = multer;
+
+      const finalFiles: any = {};
+
+      const files = (request.files as Express.Multer.File[]).map((file) => {
+        return {
+          ...file,
+          path: `storage/${multer.directory}/${file.filename}`,
+        };
+      });
+
+      fields.map((field) => {
+        const temp = files.filter((file) => field.name === file.fieldname);
+        finalFiles[field.name] = field.count === 1 ? temp[0] : temp;
+      });
+
+      request.files = finalFiles;
+
+      return next();
+    };
+
+    const OnStartMiddleWare = async (
+      request: Request,
+      response: Response,
+      next: NextFunction,
+    ) => {
+      const data = {
+        ...request.body,
+        ...request.params,
+        ...request.query,
+        ...request.files,
+      };
+
+      const onStartResult = await onStart(data, CallBacks, Utills);
+      next();
+    };
+
+    // Proccess & Finish
+    const OnProccessMiddleWare = async (
+      request: Request,
+      response: Response,
+      next: NextFunction,
+    ) => {
+      const data = {
+        ...request.body,
+        ...request.params,
+        ...request.query,
+        ...request.files,
+      };
+
+      const onProccessResult = await onProccess(data, CallBacks, Utills);
+      const onFinishResult = await onFinish(
+        data,
+        onProccessResult,
+        CallBacks,
+        Utills,
+      );
+
+      return response
+        .status(StatusCodes[onFinishResult.status])
+        .json(onFinishResult);
+    };
+
     return [
-      async (request: Request, response: Response, next: NextFunction) => {
-        const data = {
-          ...request.body,
-          ...request.params,
-          ...request.query,
-        };
-
-        const onStartResult = await onStart(data, CallBacks, Utills);
-        next();
-      },
-      async (request: Request, response: Response, next: NextFunction) => {
-        const data = {
-          ...request.body,
-          ...request.params,
-          ...request.query,
-        };
-
-        const onProccessResult = await onProccess(data, CallBacks, Utills);
-        const onFinishResult = await onFinish(
-          data,
-          onProccessResult,
-          CallBacks,
-          Utills,
-        );
-
-        return response
-          .status(StatusCodes[onFinishResult.status])
-          .json(onFinishResult);
-      },
+      multer && MulterMiddleWare.any(multer.directory),
+      FilesMiddleWare,
+      OnStartMiddleWare,
+      OnProccessMiddleWare,
+      MongooseMiddleWares.errors.objectIdError,
       MongooseMiddleWares.errors.validationError,
       MongooseMiddleWares.errors.douplicateError,
-    ];
+    ].filter((middleWare) => !!middleWare);
   }
 
   public GET<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {

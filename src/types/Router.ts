@@ -1,3 +1,4 @@
+import { IFile } from "@src/models/file/File.model";
 import { StatusCodes } from "http-status-codes";
 import { Document, Model, Mongoose } from "mongoose";
 
@@ -27,6 +28,13 @@ export interface IUtills {
 export type IMethodProps<REQ = any, RES = any> = {
   path: string;
   onStart: (data: REQ, callBacks: ICallBacks, utils: IUtills) => Promise<void>;
+  multer?: {
+    directory: string;
+    fields: {
+      name: string;
+      count: number;
+    }[];
+  };
   onProccess: (
     data: REQ,
     callBacks: ICallBacks,

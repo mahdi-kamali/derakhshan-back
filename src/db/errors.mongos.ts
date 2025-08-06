@@ -11,4 +11,7 @@ export const MongooseErrorMessages = {
     required: "رمز عبور الزامی است.",
     minlength: "رمز عبور باید حداقل ۶ کاراکتر باشد.",
   },
+  object: {
+    _id: " {field} فرمت اشتباهی است.",
+  },
 };
