@@ -12,7 +12,7 @@ export interface IGalleryCU {
 }
 
 export interface IGalleryImage {
-  _id: IGallery["_id"];
+  gallery_id: IGallery["_id"];
   image: IFile;
 }
 

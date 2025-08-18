@@ -1,10 +1,9 @@
 import { AppRouter } from "@src/base/AppRouter";
-import FileModel, { IFile } from "@src/models/file/File.model";
 import GalleryModel, {
   IGallery,
   IGalleryCU,
-  IGalleryImage,
 } from "@src/models/gallery/Gallery.model";
+import imageRouter from "./image/image.router";
 
 const GalleryRouter = new AppRouter();
 
@@ -67,54 +66,33 @@ GalleryRouter.PUT<IGallery, IGallery>({
   },
 });
 
-GalleryRouter.POST<IGalleryImage, IFile>({
-  path: "/:_id/images/",
-  multer: {
-    directory: "admin/gallery",
-    fields: [
-      {
-        name: "image",
-        count: 1,
-      },
-    ],
-  },
+GalleryRouter.DELETE<IGallery, IGallery>({
+  path: "/:_id",
   async onStart(data, callBacks, utils) {},
   async onProccess(data, { onError }, utils) {
-    const { image, _id } = data;
-    if (!image)
-      onError({
-        data: "image الزامی است",
-        message: "خطایی رخ داده است",
-        status: "BAD_REQUEST",
-      });
-
-    const gallery = await GalleryModel.findById(_id);
-    if (gallery === null)
-      onError({
-        data: "گالری وجود ندارد.",
-        message: "خطایی رخ داده است",
-        status: "BAD_REQUEST",
-      });
-
-    return data.image;
-  },
-  async onFinish(request, data, callBacks, utils) {
-    const { _id } = request;
-
-    const newImage = new FileModel(data);
-    await newImage.save();
-    const gallery = await GalleryModel.findById(_id);
-
-    await gallery?.updateOne({
-      $push: { images: newImage },
+    const gallery = await GalleryModel.findByIdAndDelete(data._id, {
+      new: true,
     });
 
+    if (gallery === null) {
+      onError({
+        data: "گالری وجود ندارد",
+        message: "خطایی راخ داده است",
+        status: "BAD_REQUEST",
+      });
+    }
+
+    return gallery!!;
+  },
+  async onFinish(request, data, callBacks, utils) {
     return {
-      data: newImage,
-      message: "عکس به گالری اضافه شد.",
-      status: "CREATED",
+      data: data,
+      message: "گالری با موفقیت حذف شد.",
+      status: "OK",
     };
   },
 });
+
+GalleryRouter.use("/images", imageRouter);
 
 export default GalleryRouter.getRouter();

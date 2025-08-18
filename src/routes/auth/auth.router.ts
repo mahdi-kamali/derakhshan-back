@@ -41,15 +41,15 @@ AuthRouter.POST<ILogin, IUser>({
     const user = await UserModel.findOne({
       password: password,
       phone: phone,
-    });
+    }).select("-password");
 
     return user!!;
   },
   async onFinish(request, data, callBacks, { jwt }) {
     return {
       data: data,
-      message: "",
-      status: "ACCEPTED",
+      message: "ورود شما با موفقیت انجام شد.",
+      status: "OK",
       token: jwt.encode({
         phone: data.phone,
       }),

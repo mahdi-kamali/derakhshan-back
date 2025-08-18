@@ -80,8 +80,8 @@ export class AppRouter {
         ...request.files,
       };
 
-      const onStartResult = await onStart(data, CallBacks, Utills);
-      next();
+      await onStart(data, CallBacks, Utills);
+      return next();
     };
 
     // Proccess & Finish
@@ -118,6 +118,7 @@ export class AppRouter {
       MongooseMiddleWares.errors.objectIdError,
       MongooseMiddleWares.errors.validationError,
       MongooseMiddleWares.errors.douplicateError,
+      ServerMiddleWres.errors.internal,
     ].filter((middleWare) => !!middleWare);
   }
 
@@ -136,6 +137,12 @@ export class AppRouter {
   public PUT<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {
     const { path } = props;
     this.router.put(path, this.MiddleWares(props));
+    return this;
+  }
+
+  public DELETE<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {
+    const { path } = props;
+    this.router.delete(path, this.MiddleWares(props));
     return this;
   }
 

@@ -1,4 +1,6 @@
 import { Response, Request, NextFunction } from "express";
+import { STATUS_CODES } from "http";
+import { StatusCodes } from "http-status-codes";
 
 export const ServerMiddleWres = {
   errors: {
@@ -8,8 +10,8 @@ export const ServerMiddleWres = {
       res: Response,
       next: NextFunction,
     ) => {
-      const status = err?.status;
-      res.status(status || 500).json(err);
+      const status = err?.status ? StatusCodes[err.status] : 500;
+      res.status(status as any).json(err);
     },
   },
 };

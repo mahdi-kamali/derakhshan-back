@@ -1,4 +1,3 @@
-import { IFile } from "@src/models/file/File.model";
 import { StatusCodes } from "http-status-codes";
 import { Document, Model, Mongoose } from "mongoose";
 
@@ -9,7 +8,7 @@ export interface IResponseMessage<RES = any> {
 }
 
 export interface IError {
-  message: string;
+  message?: string;
   data: any;
   status: keyof typeof StatusCodes;
 }
@@ -29,7 +28,7 @@ export type IMethodProps<REQ = any, RES = any> = {
   path: string;
   onStart: (data: REQ, callBacks: ICallBacks, utils: IUtills) => Promise<void>;
   multer?: {
-    directory: string;
+    directory: "gallery" | "images" | "logo";
     fields: {
       name: string;
       count: number;
