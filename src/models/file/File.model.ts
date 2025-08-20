@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IFile {
+  _id?: string;
   fieldname: string;
   originalname: string;
   encoding: string;

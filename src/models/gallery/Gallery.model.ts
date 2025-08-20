@@ -11,9 +11,14 @@ export interface IGalleryCU {
   title: string;
 }
 
-export interface IGalleryImage {
+export interface IAddImage {
   gallery_id: IGallery["_id"];
-  image: IFile;
+  images: IFile[];
+}
+
+export interface IRemoveImage {
+  gallery_id: IGallery["_id"];
+  image_id: string;
 }
 
 const GalleryModel = new mongoose.Schema<IGallery>(

@@ -7,6 +7,10 @@ import imageRouter from "./image/image.router";
 
 const GalleryRouter = new AppRouter();
 
+
+// Images
+GalleryRouter.use("/images", imageRouter);
+
 GalleryRouter.GET<any, IGallery[]>({
   path: "/",
   async onStart(data, callBacks, utils) {},
@@ -92,7 +96,5 @@ GalleryRouter.DELETE<IGallery, IGallery>({
     };
   },
 });
-
-GalleryRouter.use("/images", imageRouter);
 
 export default GalleryRouter.getRouter();

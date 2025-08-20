@@ -58,8 +58,12 @@ export class AppRouter {
         };
       });
 
+      const normalize = (name: string) => name.replace(/\[\]$/, "");
+
       fields.map((field) => {
-        const temp = files.filter((file) => field.name === file.fieldname);
+        const temp = files.filter(
+          (file) => normalize(field.name) === normalize(file.fieldname),
+        );
         finalFiles[field.name] = field.count === 1 ? temp[0] : temp;
       });
 
