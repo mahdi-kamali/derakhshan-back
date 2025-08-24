@@ -15,7 +15,7 @@ export class AppRouter {
   private router: ExpressRouter;
 
   constructor() {
-    this.router = ExpressRouter();
+    this.router = ExpressRouter({ mergeParams: true });
   }
 
   private MiddleWares<REQ = any, RES = any>(props: IMethodProps<REQ, RES>) {
@@ -154,8 +154,7 @@ export class AppRouter {
     path: string,
     middleWare: (req: Request, res: Response, next: NextFunction) => void,
   ) {
-    this.router.use(path, middleWare);
-    return this;
+    return this.router.use(path, middleWare);
   }
 
   public getRouter(): ExpressRouter {

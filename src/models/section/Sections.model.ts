@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface ILayoutCU {
+export interface ISectionCU {
   type: string;
   isActive: boolean;
   name: string;
@@ -8,7 +8,7 @@ export interface ILayoutCU {
   components: any;
 }
 
-export interface ILayout {
+export interface ISection {
   _id: string;
   type: string;
   isActive: boolean;
@@ -17,20 +17,24 @@ export interface ILayout {
   components: any;
 }
 
-const LayoutsModel = new mongoose.Schema<ILayout>(
+export interface ISectionCU {
+  _id: string;
+  type: string;
+  isActive: boolean;
+  name: string;
+  page: string;
+  components: any;
+}
+
+export const SectionsSchema = new mongoose.Schema<ISection>(
   {
     name: {
       type: String,
-      required: [true, "اسم لایه الزامی است."],
-      unique: true,
+      required: [true, "اسم سکشن الزامی است."],
     },
     type: {
       type: String,
-      required: [true, "نوع لایه بندی الزامی است."],
-    },
-    page: {
-      type: String,
-      required: [true, "صفحه الزامی است."],
+      required: [true, "نوع سکشن الزامی است."],
     },
     isActive: {
       type: Boolean,
@@ -38,6 +42,7 @@ const LayoutsModel = new mongoose.Schema<ILayout>(
     },
     components: {
       type: Object,
+      default: [],
     },
   },
   {
@@ -45,4 +50,4 @@ const LayoutsModel = new mongoose.Schema<ILayout>(
   },
 );
 
-export default mongoose.model("Layout", LayoutsModel);
+export default mongoose.model("Sections", SectionsSchema);

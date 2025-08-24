@@ -34,6 +34,10 @@ export const MongooseErrorMessages = {
     required: "تاریخ الزامی است.",
     match: "فرمت تاریخ معتبر نیست.",
   },
+  slug: {
+    required: "اسلاگ الزامی است.",
+    unique: "اسلاگ حتما باید خاص باشد..",
+  },
   number: {
     required: "{field} الزامی است.",
     min: "{field} نمی‌تواند کمتر از {min} باشد.",
