@@ -2,6 +2,7 @@ import { AppRouter } from "@src/base/AppRouter";
 import PagesModel, { IPage, IPageCU } from "@src/models/page/Page.model";
 import SectionsRouter from "./sections/sections.router";
 import { ICreatPage, IGetPages, IUpdatePage } from "./pages.type";
+import PagesMiddleWares from "./pages.middlewares";
 
 const PagesRouter = new AppRouter();
 
@@ -43,14 +44,24 @@ PagesRouter.POST<ICreatPage["REQUEST"], ICreatPage["RESPONSE"]>({
 });
 
 // Update
-PagesRouter.POST<IUpdatePage["REQUEST"], IUpdatePage["RESPONSE"]>({
+PagesRouter.PUT<IUpdatePage["REQUEST"], IUpdatePage["RESPONSE"]>({
   path: "/:_id",
   async onStart(data, { onError }, utils) {
     const { _id } = data;
+    const page = await PagesModel.findById(_id);
+    if (page === null)
+      onError({
+        data: "صفحه مورد نظر پیدا نشد.",
+        message: "خطایی رخ داده است",
+        status: "NOT_FOUND",
+      });
   },
   async onProccess(data, callBacks, utils) {
-    const newPage = new PagesModel(data);
-    return await newPage.save();
+    const { _id } = data;
+    const page = await PagesModel.findByIdAndUpdate(_id, data, { new: true });
+
+    await page?.save();
+    return page!!;
   },
   async onFinish(request, data, { onError }, { jwt }) {
     return {

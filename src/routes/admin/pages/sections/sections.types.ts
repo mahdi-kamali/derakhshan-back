@@ -11,15 +11,19 @@ export interface IGetSection {
 export interface IUpdateSection {
   REQUEST: {
     _id: IPage;
-    sections: ISection[];
+    _section_id: ISection["_id"];
   };
-  RESPONSE: IPage;
+  RESPONSE: ISection;
 }
 
 export interface ICreateSection {
   REQUEST: {
     _id: IPage["_id"];
-    section: ISectionCU;
+    type: string;
+    isActive: boolean;
+    name: string;
+    page: string;
+    components: any;
   };
   RESPONSE: IPage;
 }

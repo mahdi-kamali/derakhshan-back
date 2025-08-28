@@ -40,9 +40,9 @@ SectionsRouter.GET<IGetSection["REQUEST"], IGetSection["RESPONSE"]>({
 
 // Update
 SectionsRouter.PUT<IUpdateSection["REQUEST"], IUpdateSection["RESPONSE"]>({
-  path: "/",
+  path: "/:_section_id",
   async onStart(data, { onError }, utils) {
-    const { _id } = data;
+    const { _id, _section_id } = data;
 
     const page = await PageModel.findById(_id);
     if (page === null)
@@ -51,21 +51,30 @@ SectionsRouter.PUT<IUpdateSection["REQUEST"], IUpdateSection["RESPONSE"]>({
         status: "NOT_FOUND",
         message: "صفحه مورد نظر پیدا نشد",
       });
+
+    const section = await SectionsModel.findById(_section_id);
+    if (section === null)
+      onError({
+        data: "error",
+        status: "NOT_FOUND",
+        message: "سیکشن مورد نظر پیدا نشد",
+      });
   },
   async onProccess(data, callBacks, utils) {
-    const { _id, sections } = data;
+    const { _section_id } = data;
 
-    const page = await PageModel.findByIdAndUpdate(
-      _id,
+    const section = await SectionsModel.findByIdAndUpdate(
+      _section_id,
       {
-        sections: sections,
+        ...data,
+        _id: _section_id,
       },
       {
         new: true,
       },
     );
 
-    return page!!;
+    return section!!;
   },
   async onFinish(request, data, callBacks, utils) {
     return {
@@ -91,9 +100,9 @@ SectionsRouter.POST<ICreateSection["REQUEST"], ICreateSection["RESPONSE"]>({
       });
   },
   async onProccess(data, callBacks, utils) {
-    const { _id, section } = data;
+    const { _id } = data;
 
-    const newSection = new SectionsModel(section);
+    const newSection = new SectionsModel(data);
 
     await newSection.save();
 
