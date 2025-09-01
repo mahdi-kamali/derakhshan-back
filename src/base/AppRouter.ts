@@ -159,7 +159,6 @@ export class AppRouter {
 
   public getRouter(): ExpressRouter {
     this.router.use((err: any, req: any, res: any, next: any) => {
-      console.log(err);
       return res.json(err);
     });
     return this.router;

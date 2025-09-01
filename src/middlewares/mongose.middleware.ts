@@ -32,13 +32,11 @@ export const MongooseMiddleWares = {
       next: NextFunction,
     ) => {
       if (err.code === 11000) {
-        const field = Object.entries(err.keyPattern)[0][0];
-
         const result = {
-          // @ts-ignore
-          data: MongooseErrorMessages[field].unique,
+          data: "داده با همین مقادیر قبلا وجود دارد.",
           message: "خطایی رخ داده است",
           status: "BAD_REQUEST",
+          keyValue: err.keyValue,
         };
 
         return res.status(400).json(result);
@@ -52,8 +50,6 @@ export const MongooseMiddleWares = {
       res: Response,
       next: NextFunction,
     ) => {
-
-
       if (err.kind === "ObjectId") {
         const field = err.path;
 

@@ -102,23 +102,20 @@ SectionsRouter.POST<ICreateSection["REQUEST"], ICreateSection["RESPONSE"]>({
   async onProccess(data, callBacks, utils) {
     const { _id } = data;
 
-    const newSection = new SectionsModel(data);
+    const newSection = new SectionsModel({
+      ...data,
+      _id: undefined,
+    });
 
     await newSection.save();
 
-    const page = await PageModel.findByIdAndUpdate(
-      _id,
-      {
-        $push: {
-          sections: newSection._id,
-        },
+    const page = await PageModel.findByIdAndUpdate(_id, {
+      $push: {
+        sections: newSection._id,
       },
-      {
-        new: true,
-      },
-    );
+    });
 
-    return page?.save()!!;
+    return page!!;
   },
   async onFinish(request, data, callBacks, utils) {
     return {
@@ -170,7 +167,7 @@ SectionsRouter.DELETE<IDeleteSection["REQUEST"], IDeleteSection["RESPONSE"]>({
   async onFinish(request, data, callBacks, utils) {
     return {
       data: data,
-      message: "محتویات این صفحه با موفقیت دریافت شد.",
+      message: "سکشن با موفقیت اضافه شد.",
       status: "ACCEPTED",
     };
   },
