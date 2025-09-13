@@ -4,6 +4,7 @@ import usersRouter from "./users/users.router";
 import layoutRouter from "./layouts/layout.router";
 import galleryRouter from "./gallery/gallery.router";
 import pagesRouter from "./pages/pages.router";
+import categoriesRouter from "./categories/categories.router";
 
 const AdminRouter = new AppRouter();
 
@@ -16,5 +17,7 @@ AdminRouter.use("/layouts", layoutRouter);
 AdminRouter.use("/gallery", galleryRouter);
 
 AdminRouter.use("/pages", pagesRouter);
+
+AdminRouter.use("/categories", categoriesRouter);
 
 export default AdminRouter.getRouter();

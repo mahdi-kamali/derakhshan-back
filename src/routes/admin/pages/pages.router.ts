@@ -14,7 +14,7 @@ PagesRouter.GET<IGetPages["REQUEST"], IGetPages["RESPONSE"]>({
   path: "/",
   async onStart(data, callBacks, utils) {},
   async onProccess(data, callBacks, utils) {
-    const pages = await PagesModel.find();
+    const pages = await PagesModel.find().populate("sections");
     return pages;
   },
   async onFinish(request, data, callBacks, utils) {

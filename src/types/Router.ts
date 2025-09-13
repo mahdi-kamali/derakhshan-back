@@ -28,7 +28,7 @@ export type IMethodProps<REQ = any, RES = any> = {
   path: string;
   onStart: (data: REQ, callBacks: ICallBacks, utils: IUtills) => Promise<void>;
   multer?: {
-    directory: "gallery" | "images" | "logo";
+    directory: "gallery" | "images" | "logo" | "categories";
     fields: {
       name: string;
       count: number;
