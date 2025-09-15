@@ -15,6 +15,7 @@ export const AdminMiddleWares = {
     const token = req.headers.authorization.split(" ")[1];
     const rawUser = JWT.DecodeJWT(token);
 
+
     if (rawUser === null) {
       return res.status(403).json({
         data: "توکن اشتباه است.",
@@ -26,6 +27,7 @@ export const AdminMiddleWares = {
     const user = await UserModel.findOne({
       phone: rawUser.phone,
     });
+
 
     if (user?.role !== "Admin")
       return res.status(403).json({
