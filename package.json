@@ -2,7 +2,7 @@
   "name": "express-gen-ts",
   "version": "0.0.0",
   "scripts": {
-    "build": "",
+    "build": "tsc",
     "dev": "npx nodemon ./src/index.ts",
     "start": "npx nodemon ./src/index.ts"
   },
