@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "dev": "npx nodemon ./src/index.ts",
-    "start": "npx nodemon ./src/index.ts"
+    "dev": "npx nodemon src/index.ts",
+    "start": "npx nodemon dist/src/index.js"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -15,6 +15,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "force": "^0.0.3",
     "helmet": "^8.1.0",
     "http-status-codes": "^2.3.0",
     "inserturlparams": "^2.0.5",

@@ -1,11 +1,11 @@
-import { DB_CONNECTION_STRING } from "@src/common/constants/Paths";
+import ENV from "@src/common/constants/ENV";
 import { SuccessLogger, WarningLogger } from "@src/common/util/logger";
 import mongoose from "mongoose";
 
 export const ConnectDB = async () => {
   WarningLogger("\n *******************   Connecting DB *****************");
 
-  await mongoose.connect(DB_CONNECTION_STRING, {
+  await mongoose.connect(ENV.DATABASE_URL, {
     directConnection: true,
   });
 

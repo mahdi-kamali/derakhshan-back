@@ -1,21 +1,19 @@
-import jetEnv, { num } from 'jet-env';
-import { isEnumVal } from 'jet-validators';
+import dontenv from "dotenv";
 
-import { NodeEnvs } from '.';
-
+dontenv.config();
 
 /******************************************************************************
                                  Setup
 ******************************************************************************/
 
-const ENV = jetEnv({
-  NodeEnv: isEnumVal(NodeEnvs),
-  Port: num,
-});
-
+const ENV = process.env as any;
 
 /******************************************************************************
                             Export default
 ******************************************************************************/
 
-export default ENV;
+export default {
+  PORT: ENV.PORT,
+  DATABASE_URL: ENV.DATABASE_URL,
+  ACCESS_TOKEN: ENV.ACCESS_TOKEN,
+};

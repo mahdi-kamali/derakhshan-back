@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken";
+import ENV from "../constants/ENV";
 
-const TOKEN: any = process.env.ACCESS_TOKEN;
 
 export const JWT = {
   EncodeJWT: (data: any) => {
-    const encoded = jwt.sign(data, TOKEN, {
+    const encoded = jwt.sign(data, ENV.ACCESS_TOKEN, {
       expiresIn: "1w",
     });
 
     return encoded;
   },
   DecodeJWT: (data: any) => {
-    const decoded = jwt.decode(data, TOKEN);
+    const decoded = jwt.decode(data, ENV.ACCESS_TOKEN);
     return decoded as any;
   },
 };

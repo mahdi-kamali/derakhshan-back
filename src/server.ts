@@ -1,6 +1,5 @@
 import morgan from "morgan";
 import express from "express";
-import ENV from "@src/common/constants/ENV";
 import { NodeEnvs } from "@src/common/constants";
 
 import ApiRouter from "@src/routes/routes";
@@ -19,10 +18,7 @@ app.use("/storage", express.static(storagePath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Show routes called in console during development
-if (ENV.NodeEnv === NodeEnvs.Dev) {
-  app.use(morgan("dev"));
-}
+app.use(morgan("dev"));
 
 app.use("/api", ApiRouter);
 
