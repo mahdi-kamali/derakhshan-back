@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "npx nodemon src/index.ts",
-    "start": "npx nodemon dist/src/index.js"
+    "start": "npx nodemon src/index.ts"
   },
   "engines": {
     "node": ">=16.0.0"
