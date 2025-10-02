@@ -152,17 +152,21 @@ SectionsRouter.DELETE<IDeleteSection["REQUEST"], IDeleteSection["RESPONSE"]>({
   async onProccess(data, callBacks, utils) {
     const { _id, _section_id } = data;
 
-    const page = await PageModel.findByIdAndUpdate(
-      _id,
-      {
-        $pull: {
-          sections: _section_id,
-        },
-      },
-      { new: true },
-    );
+    // const page = await PageModel.findByIdAndUpdate(
+    //   _id,
+    //   {
+    //     $pull: {
+    //       sections: _section_id,
+    //     },
+    //   },
+    //   { new: true },
+    // );
 
-    return page!!;
+    const Section = await SectionsModel.findByIdAndDelete(_section_id, {
+      new: true,
+    });
+
+    return Section!!;
   },
   async onFinish(request, data, callBacks, utils) {
     return {

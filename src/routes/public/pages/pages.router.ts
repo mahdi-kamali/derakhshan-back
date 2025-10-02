@@ -20,6 +20,7 @@ PagesRouter.GET<IGetPages["REQUEST"], IGetPages["RESPONSE"]>({
   },
 });
 
+// Get By Slug
 PagesRouter.GET<IGetPageBySlug["REQUEST"], IGetPageBySlug["RESPONSE"]>({
   path: "/slug/",
   async onStart(data, callBacks, utils) {},

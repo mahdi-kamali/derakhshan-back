@@ -6,7 +6,7 @@ import PagesMiddleWares from "./pages.middlewares";
 
 const PagesRouter = new AppRouter();
 
-// Contents
+// Sections
 PagesRouter.use("/:_id/sections", SectionsRouter);
 
 // List

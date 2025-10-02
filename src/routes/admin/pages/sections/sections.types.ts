@@ -33,5 +33,5 @@ export interface IDeleteSection {
     _id: IPage["_id"];
     _section_id: ISection["_id"];
   };
-  RESPONSE: IPage;
+  RESPONSE: ISection;
 }

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import { FileSchema, IFile } from "../file/File.model";
 
+enum TYPE {
+  SPECIAL = "SPECIAL",
+  NORMAL = "NORMAL",
+}
+
 export interface ICareer {
   title: string;
   skills: string[];
@@ -8,6 +13,7 @@ export interface ICareer {
   isActive: boolean;
   image: IFile;
   _id?: mongoose.ObjectId;
+  type: TYPE;
 }
 
 const CareerModel = new mongoose.Schema<ICareer>(
@@ -28,10 +34,15 @@ const CareerModel = new mongoose.Schema<ICareer>(
       type: Boolean,
       default: true,
     },
-    image : {
-      type : FileSchema,
-      required : [true , "عکس الزامی است"]
-    }
+    image: {
+      type: FileSchema,
+      required: [true, "عکس الزامی است"],
+    },
+    type: {
+      type: String,
+      enum: TYPE,
+      default: TYPE.NORMAL,
+    },
   },
   {
     timestamps: true,

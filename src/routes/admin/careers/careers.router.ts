@@ -7,6 +7,7 @@ import {
   IUpdateCareer,
 } from "./careers.types";
 import CareerModel from "@src/models/career/Career.model";
+import SectionsModel from "@src/models/section/Sections.model";
 
 const CareersRouter = new AppRouter();
 
@@ -80,6 +81,9 @@ CareersRouter.DELETE<IDeleteCareer["REQUEST"], IDeleteCareer["RESPONSE"]>({
   async onProccess(data, { onError }, utils) {
     const { _id } = data;
     const career = await CareerModel.findByIdAndDelete(_id, { new: true });
+    SectionsModel.find({
+      
+    })
     if (career === null) {
       onError({
         data: "آگهی پیدا نشد",
