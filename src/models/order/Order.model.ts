@@ -28,6 +28,7 @@ export interface IOrder extends Document {
       height: number;
     };
   };
+  description : string
 }
 
 const OrdersSchema = new Schema<IOrder>(
@@ -59,6 +60,10 @@ const OrdersSchema = new Schema<IOrder>(
         height: { type: Number, required: [true, "ارتفاع محصول الزامی است"] },
       },
     },
+    description : {
+      type : String,
+      required : [true , "توضیحات الزامی است"]
+    }
   },
   {
     timestamps: true,
