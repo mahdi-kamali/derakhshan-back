@@ -7,6 +7,7 @@ import pagesRouter from "./pages/pages.router";
 import categoriesRouter from "./categories/categories.router";
 import careersRouter from "./careers/careers.router";
 import contact_usRouter from "./contact-us/contact_us.router";
+import orderRouter from "./order/order.router";
 
 const AdminRouter = new AppRouter();
 
@@ -25,5 +26,7 @@ AdminRouter.use("/categories", categoriesRouter);
 AdminRouter.use("/careers", careersRouter);
 
 AdminRouter.use("/contact-us", contact_usRouter);
+
+AdminRouter.use("/orders", orderRouter);
 
 export default AdminRouter.getRouter();

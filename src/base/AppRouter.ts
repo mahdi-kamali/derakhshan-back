@@ -11,6 +11,7 @@ import {
 } from "express";
 import { StatusCodes } from "http-status-codes";
 
+import loadesh from "lodash";
 export class AppRouter {
   private router: ExpressRouter;
 
@@ -65,6 +66,7 @@ export class AppRouter {
           (file) => normalize(field.name) === normalize(file.fieldname),
         );
         finalFiles[field.name] = field.count === 1 ? temp[0] : temp;
+        // loadesh.set(finalFiles, field.name, field.count === 1 ? temp[0] : temp);
       });
 
       request.files = finalFiles;
