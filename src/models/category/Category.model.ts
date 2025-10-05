@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 import { FileSchema, IFile } from "../file/File.model";
+import { IProduct, ProductSchema } from "../product/Product.model";
 
 export interface ICategory {
   title: string;
   image: IFile;
+  products: IProduct[];
   _id?: mongoose.ObjectId;
 }
 
@@ -17,6 +19,11 @@ const CategoryModel = new mongoose.Schema<ICategory>(
     title: {
       type: String,
       required: [true, "عنوان الزامی است"],
+    },
+    products: {
+      type: [ProductSchema],
+      required: [true, "محصولات دسته بندی الزامی است"],
+      ref: "Products",
     },
   },
   {
