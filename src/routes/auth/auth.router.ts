@@ -46,13 +46,17 @@ AuthRouter.POST<ILogin, IUser>({
     return user!!;
   },
   async onFinish(request, data, callBacks, { jwt }) {
+    const token = jwt.encode({
+      phone: data.phone,
+    });
+
     return {
-      data: data,
+      data: {
+        ...data,
+        token: token,
+      } as IUser,
       message: "ورود شما با موفقیت انجام شد.",
       status: "OK",
-      token: jwt.encode({
-        phone: data.phone,
-      }),
     };
   },
 });
@@ -70,9 +74,6 @@ AuthRouter.POST<IRegister, IUser>({
       data: data,
       message: "ثبت نام با موفقیت انجام شد.",
       status: "OK",
-      token: jwt.encode({
-        phone: data.phone,
-      }),
     };
   },
 });

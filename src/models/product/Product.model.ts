@@ -4,9 +4,11 @@ import { FileSchema, IFile } from "../file/File.model";
 export interface IProduct {
   _id?: string;
   title: string;
+  en_title: string;
   image: IFile;
   gallery: IFile[];
-  description : string
+  description: string;
+  en_description: string;
 }
 
 export const ProductSchema = new mongoose.Schema<IProduct>(
@@ -14,6 +16,10 @@ export const ProductSchema = new mongoose.Schema<IProduct>(
     title: {
       type: String,
       required: [true, "عنوان الزامی است"],
+    },
+    en_title: {
+      type: String,
+      required: [true, "عنوان (لاتین) الزامی است"],
     },
     gallery: {
       type: [FileSchema],
@@ -24,10 +30,14 @@ export const ProductSchema = new mongoose.Schema<IProduct>(
       type: FileSchema,
       required: [true, "عکس اصلی الزامی است"],
     },
-    description : {
-      type : String ,
-      required : [true , "توضیحات الزامی است"]
-    }
+    description: {
+      type: String,
+      required: [true, "توضیحات الزامی است"],
+    },
+    en_description: {
+      type: String,
+      required: [true, "توضیحات (لاتین) الزامی است"],
+    },
   },
   {
     timestamps: true,

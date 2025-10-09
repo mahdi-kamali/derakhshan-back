@@ -71,7 +71,6 @@ categoriesRouter.POST<ICreateCategory["REQUEST"], ICreateCategory["RESPONSE"]>({
   },
   async onProccess(data, callBacks, utils) {
     const category = new CategoryModel(data);
-
     return await category.save();
   },
   async onFinish(request, data, callBacks, utils) {

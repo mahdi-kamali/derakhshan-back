@@ -62,7 +62,6 @@ SectionsRouter.PUT<IUpdateSection["REQUEST"], IUpdateSection["RESPONSE"]>({
   },
   async onProccess(data, callBacks, utils) {
     const { _section_id } = data;
-
     const section = await SectionsModel.findByIdAndUpdate(
       _section_id,
       {

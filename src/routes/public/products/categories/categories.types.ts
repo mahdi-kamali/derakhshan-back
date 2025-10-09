@@ -3,7 +3,11 @@ import { IFile } from "@src/models/file/File.model";
 import { IProduct } from "@src/models/product/Product.model";
 
 export interface ICreateCategory {
-  REQUEST: ICategory;
+  REQUEST: {
+    image: IFile;
+    title: string;
+    products: IProduct[];
+  };
   RESPONSE: ICategory;
 }
 

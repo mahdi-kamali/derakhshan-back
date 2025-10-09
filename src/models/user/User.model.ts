@@ -7,6 +7,7 @@ export interface IUser extends Document {
   role: "User" | "Admin";
   createdAt: Date;
   updatedAt: Date;
+  token?: string;
 }
 
 export interface IRegister extends Document {
