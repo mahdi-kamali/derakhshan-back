@@ -41,7 +41,7 @@ AuthRouter.POST<ILogin, IUser>({
     const user = await UserModel.findOne({
       password: password,
       phone: phone,
-    }).select("-password");
+    }).select("-password").lean();
 
     return user!!;
   },
