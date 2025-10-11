@@ -5,9 +5,21 @@ const webHooksRouter = Router();
 
 // Projects configuration
 const projects = [
-  { name: "derakhshan-back", dir: "/home/dppackde/derakhshan-back", buildScript: "build", startScript: "start" },
-  { name: "derakhshan-front", dir: "/home/dppackde/derakhshan-front", buildScript: "build", startScript: "start" },
-  { name: "derakhshan-penel", dir: "/home/dppackde/derakhshan-penel", buildScript: "build", startScript: "start" },
+  {
+    name: "derakhshan-back",
+    dir: "/home/dppackde/derakhshan-back",
+    deployScript: "deploy",
+  },
+  {
+    name: "derakhshan-front",
+    dir: "/home/dppackde/derakhshan-front",
+    deployScript: "deploy",
+  },
+  {
+    name: "derakhshan-penel",
+    dir: "/home/dppackde/derakhshan-penel",
+    deployScript: "deploy",
+  },
 ];
 
 // Helper to run shell commands
@@ -24,34 +36,27 @@ webHooksRouter.post("/", async (req, res) => {
   console.log("Webhook received:", req.body?.repository?.full_name || "");
 
   try {
+    // Deploy all projects sequentially
     for (const project of projects) {
-      console.log(`\n📦 Updating ${project.name}...`);
-
-      // Pull latest updates
-      console.log("Pulling latest code...");
-      const pullResult = await runCommand("git pull origin main", project.dir);
-      console.log(pullResult);
-
-      // Install dependencies
-      console.log("Installing dependencies...");
-      const installResult = await runCommand("npm install --force", project.dir);
-      console.log(installResult);
-
-      // Build project using its own script
-      console.log("Building project...");
-      const buildResult = await runCommand(`npm run ${project.buildScript}`, project.dir);
-      console.log(buildResult);
+      console.log(`\n📦 Running deploy for ${project.name}...`);
+      const deployResult = await runCommand(
+        `npm run ${project.deployScript}`,
+        project.dir,
+      );
+      console.log(deployResult);
     }
 
-    // Restart all PM2 apps (your PM2 apps should already use npm start scripts)
-    console.log("\n🔄 Restarting all PM2 apps...");
+    // After all deploys, do a single global PM2 restart
+    console.log("\n🔄 Restarting all PM2 apps globally...");
     const pm2Result = await runCommand("pm2 restart all", "/home/dppackde");
     console.log(pm2Result);
 
-    res.status(200).send("✅ Projects updated, built, and restarted successfully!");
+    res
+      .status(200)
+      .send("✅ All projects deployed and PM2 restarted globally!");
   } catch (err) {
     console.error(err);
-    res.status(500).send("❌ Failed to update projects");
+    res.status(500).send("❌ Failed to deploy projects");
   }
 });
 
