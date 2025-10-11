@@ -1,5 +1,5 @@
 {
-  "name": "derakhshan-panel",
+  "name": "derakhshan-back",
   "version": "0.0.0",
   "scripts": {
     "dev": "cross-env NODE_ENV=development dotenv -e .env.development -- npx nodemon src/index.ts",
