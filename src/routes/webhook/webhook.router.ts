@@ -5,9 +5,9 @@ const webHooksRouter = Router();
 
 // Projects configuration
 const projects = [
-  { name: "derakhshan-back", dir: "/home/dppackde/derakhshan-back" },
-  { name: "derakhshan-front", dir: "/home/dppackde/derakhshan-front" },
-  { name: "derakhshan-penel", dir: "/home/dppackde/derakhshan-penel" },
+  { name: "derakhshan-back", dir: "/home/dppackde/derakhshan-back", buildScript: "build", startScript: "start" },
+  { name: "derakhshan-front", dir: "/home/dppackde/derakhshan-front", buildScript: "build", startScript: "start" },
+  { name: "derakhshan-penel", dir: "/home/dppackde/derakhshan-penel", buildScript: "build", startScript: "start" },
 ];
 
 // Helper to run shell commands
@@ -20,16 +20,10 @@ const runCommand = (cmd: string, cwd: string): Promise<string> => {
   });
 };
 
-// Get latest commit messages
-const getLatestCommits = (cwd: string, count = 5) => {
-  return runCommand(`git log -n ${count} --pretty=format:"%h - %s"`, cwd);
-};
-
 webHooksRouter.post("/", async (req, res) => {
-  try {
-    console.log("Webhook received:", req.body?.repository?.full_name || "");
+  console.log("Webhook received:", req.body?.repository?.full_name || "");
 
-    
+  try {
     for (const project of projects) {
       console.log(`\n📦 Updating ${project.name}...`);
 
@@ -38,26 +32,23 @@ webHooksRouter.post("/", async (req, res) => {
       const pullResult = await runCommand("git pull origin main", project.dir);
       console.log(pullResult);
 
-      // Log latest commit messages
-      console.log("Latest commits:");
-      const commits = await getLatestCommits(project.dir, 5);
-      console.log(commits);
+      // Install dependencies
+      console.log("Installing dependencies...");
+      const installResult = await runCommand("npm install --force", project.dir);
+      console.log(installResult);
 
-      // Install & Build
-      console.log("Installing dependencies and building...");
-      const buildResult = await runCommand(
-        "npm install --force && npm run build",
-        project.dir
-      );
+      // Build project using its own script
+      console.log("Building project...");
+      const buildResult = await runCommand(`npm run ${project.buildScript}`, project.dir);
       console.log(buildResult);
     }
 
-    // Restart all PM2 apps
+    // Restart all PM2 apps (your PM2 apps should already use npm start scripts)
     console.log("\n🔄 Restarting all PM2 apps...");
     const pm2Result = await runCommand("pm2 restart all", "/home/dppackde");
     console.log(pm2Result);
 
-    res.status(200).send("✅ Projects updated and restarted successfully!");
+    res.status(200).send("✅ Projects updated, built, and restarted successfully!");
   } catch (err) {
     console.error(err);
     res.status(500).send("❌ Failed to update projects");
