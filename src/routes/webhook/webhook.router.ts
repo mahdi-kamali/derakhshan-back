@@ -22,7 +22,8 @@ const runCommand = (cmd: string, cwd: string): Promise<string> => {
 
 webHooksRouter.post("/", async (req, res) => {
   console.log("Webhook received:", req.body?.repository?.full_name || "");
-  console.log("proccess running.....")
+  console.log("proccess running.....");
+  console.log("proccess running.....");
 
   try {
     for (const project of projects) {
@@ -31,7 +32,6 @@ webHooksRouter.post("/", async (req, res) => {
       // Pull latest updates
       console.log("Pulling latest code...");
       const pullResult = await runCommand("git pull origin main", project.dir);
-      
 
       // Install & Build
       console.log("Installing dependencies and building...");
