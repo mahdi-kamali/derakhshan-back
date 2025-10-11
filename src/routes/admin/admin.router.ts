@@ -8,6 +8,7 @@ import careersRouter from "./careers/careers.router";
 import contact_usRouter from "./contact-us/contact_us.router";
 import orderRouter from "./order/order.router";
 import productsRouter from "./products/products.router";
+import iconsRouter from "./icons/icons.router";
 
 const AdminRouter = new AppRouter();
 
@@ -27,7 +28,7 @@ AdminRouter.use("/contact-us", contact_usRouter);
 
 AdminRouter.use("/orders", orderRouter);
 
-
 AdminRouter.use("/products", productsRouter);
+AdminRouter.use("/icons", iconsRouter);
 
 export default AdminRouter.getRouter();

@@ -1,8 +1,7 @@
 import { AppRouter } from "@src/base/AppRouter";
-import PagesModel, { IPage, IPageCU } from "@src/models/page/Page.model";
+import PagesModel from "@src/models/page/Page.model";
 import SectionsRouter from "./sections/sections.router";
-import { ICreatPage, IGetPages, IUpdatePage } from "./pages.type";
-import PagesMiddleWares from "./pages.middlewares";
+import { ICreatPage, IGetPageByID, IGetPages, IUpdatePage } from "./pages.type";
 
 const PagesRouter = new AppRouter();
 
@@ -21,6 +20,30 @@ PagesRouter.GET<IGetPages["REQUEST"], IGetPages["RESPONSE"]>({
     return {
       data: data,
       message: "صفحات با موفقیت دریافت شد.",
+      status: "ACCEPTED",
+    };
+  },
+});
+
+// GetByID
+PagesRouter.GET<IGetPageByID["REQUEST"], IGetPageByID["RESPONSE"]>({
+  path: "/:_id",
+  async onStart(data, { onError }, utils) {
+    const page = await PagesModel.findById(data._id).populate("sections");
+    if (page === null)
+      onError({
+        data: "صفحه مورد نظر پیدا نشد",
+        status: "NOT_FOUND",
+      });
+  },
+  async onProccess(data, callBacks, utils) {
+    const page = await PagesModel.findById(data._id).populate("sections");
+    return page!!;
+  },
+  async onFinish(request, data, callBacks, utils) {
+    return {
+      data: data,
+      message: "صفحه با موفقیت دریافت شد.",
       status: "ACCEPTED",
     };
   },

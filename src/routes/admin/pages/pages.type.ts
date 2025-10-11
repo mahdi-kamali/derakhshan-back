@@ -5,6 +5,13 @@ export interface IGetPages {
   RESPONSE: IPage[];
 }
 
+export interface IGetPageByID {
+  REQUEST: {
+    _id: IPage["id"];
+  };
+  RESPONSE: IPage;
+}
+
 export interface ICreatPage {
   REQUEST: {
     title: string;

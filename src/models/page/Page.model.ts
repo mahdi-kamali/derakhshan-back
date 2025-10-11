@@ -6,22 +6,14 @@ import LayoutsModel, {
 
 export interface IPage extends Document {
   title: string;
+  title_en: string;
   slug: string;
   sections: ISection;
-  metaTitle?: string;
-  metaDescription?: string;
   status: "draft" | "published" | "stopped";
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface IPageCU {
-  title: string;
-  slug: string;
-  sections: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  status: "draft" | "published" | "stopped";
+  nav: {
+    show: boolean;
+    icon: string;
+  };
 }
 
 const PagesModel = new Schema<IPage>(
@@ -31,6 +23,13 @@ const PagesModel = new Schema<IPage>(
       required: [true, "عنوان صفحه الزامی است"],
       trim: true,
     },
+    title_en: {
+      type: String,
+      required: [true, "عنوان صفحه ( لاتین ) الزامی است"],
+      trim: true,
+      default: "",
+    },
+
     slug: {
       type: String,
       required: [true, "اسلاگ الزامی است"],
@@ -43,18 +42,17 @@ const PagesModel = new Schema<IPage>(
       default: [],
       ref: "Sections",
     },
-    metaTitle: {
-      type: String,
-      trim: true,
-    },
-    metaDescription: {
-      type: String,
-      trim: true,
-    },
     status: {
       type: String,
       enum: ["draft", "published", "stopped"],
       default: "published",
+    },
+    nav: {
+      type: Object,
+      default: {
+        show: false,
+        icon: "",
+      },
     },
   },
   {
