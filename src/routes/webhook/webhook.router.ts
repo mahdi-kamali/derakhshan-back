@@ -21,11 +21,8 @@ const runCommand = (cmd: string, cwd: string): Promise<string> => {
 };
 
 webHooksRouter.post("/", async (req, res) => {
-  console.log("Webhook received:", req.body?.repository?.full_name || "");
-  console.log("proccess running.....");
-  console.log("proccess running.....");
-
   try {
+    console.log("Webhook received:", req.body?.repository?.full_name || "");
     for (const project of projects) {
       console.log(`\n📦 Updating ${project.name}...`);
 
