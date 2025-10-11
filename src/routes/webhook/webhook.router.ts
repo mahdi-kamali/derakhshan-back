@@ -20,21 +20,33 @@ const runCommand = (cmd: string, cwd: string): Promise<string> => {
   });
 };
 
+// Get latest commit messages
+const getLatestCommits = (cwd: string, count = 5) => {
+  return runCommand(`git log -n ${count} --pretty=format:"%h - %s"`, cwd);
+};
+
 webHooksRouter.post("/", async (req, res) => {
   try {
     console.log("Webhook received:", req.body?.repository?.full_name || "");
+
     for (const project of projects) {
       console.log(`\n📦 Updating ${project.name}...`);
 
       // Pull latest updates
       console.log("Pulling latest code...");
       const pullResult = await runCommand("git pull origin main", project.dir);
+      console.log(pullResult);
+
+      // Log latest commit messages
+      console.log("Latest commits:");
+      const commits = await getLatestCommits(project.dir, 5);
+      console.log(commits);
 
       // Install & Build
       console.log("Installing dependencies and building...");
       const buildResult = await runCommand(
         "npm install --force && npm run build",
-        project.dir,
+        project.dir
       );
       console.log(buildResult);
     }
