@@ -1,15 +1,14 @@
 import morgan from "morgan";
 import express from "express";
-import { NodeEnvs } from "@src/common/constants";
-
 import ApiRouter from "@src/routes/routes";
 import CorsMiddleWare from "./middlewares/cors.middlewares";
 import path from "path";
+import dotenv from "dotenv"
 
 /******************************************************************************
                                 Setup
 ******************************************************************************/
-
+dotenv.config()
 const app = express();
 const storagePath = path.join(__dirname.replace("src", ""), "/storage");
 // Basic middleware
