@@ -36,21 +36,7 @@ webHooksRouter.post("/", async (req, res) => {
   console.log("Webhook received:", req.body?.repository?.full_name || "");
 
   try {
-    // Deploy all projects sequentially
-    for (const project of projects) {
-      console.log(`\n📦 Running deploy for ${project.name}...`);
-      const deployResult = await runCommand(
-        `npm run ${project.deployScript}`,
-        project.dir,
-      );
-      console.log(deployResult);
-    }
-
-    // After all deploys, do a single global PM2 restart
-    console.log("\n🔄 Restarting all PM2 apps globally...");
-    const pm2Result = await runCommand("pm2 restart all", "/home/dppackde");
-    console.log(pm2Result);
-
+    await runCommand("pm2 restart all", "/home/dppackde");
     res
       .status(200)
       .send("✅ All projects deployed and PM2 restarted globally!");
