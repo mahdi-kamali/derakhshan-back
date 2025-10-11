@@ -31,6 +31,7 @@ webHooksRouter.post("/", async (req, res) => {
       console.log("Pulling latest code...");
       const pullResult = await runCommand("git pull origin main", project.dir);
       console.log(pullResult);
+      
 
       // Install & Build
       console.log("Installing dependencies and building...");
