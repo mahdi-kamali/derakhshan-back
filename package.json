@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "cross-env NODE_ENV=development dotenv -e .env.development -- npx nodemon src/index.ts",
-    "start": "cross-env NODE_ENV=production dotenv -e .env.production -- node dist/src/index.js",
+    "start": "npm run deploy & cross-env NODE_ENV=production dotenv -e .env.production -- node dist/src/index.js",
     "pull": "git pull origin main",
     "build": "tsc && tsc-alias",
-    "deploy": "npm run pull && npm install --force && npm run build && npm run start"
+    "deploy": "npm run pull && npm install --force && npm run build"
   },
   "engines": {
     "node": ">=16.0.0"
