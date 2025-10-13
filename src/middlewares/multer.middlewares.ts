@@ -3,15 +3,18 @@ import path from "path";
 import fs from "fs";
 
 const upload = (directory: string) => {
-  directory = `storage/${directory}`;
-  const uploadPath = directory;
+  // Always upload to root-level storage directory (outside dist)
+
+  const rootPath = process.cwd();
+  const uploadPath = path.join(rootPath, "storage", directory);
+
   if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
   }
 
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, directory);
+      cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
       cb(null, Date.now() + path.extname(file.originalname));
