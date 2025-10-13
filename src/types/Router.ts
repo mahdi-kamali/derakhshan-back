@@ -22,6 +22,13 @@ export interface IUtills {
     encode: (data: any) => string;
     decode: (data: any) => any;
   };
+  fileSystem: {
+    deleteFile: (props: {
+      path: string;
+      onSuccess: () => void;
+      onFail: (error: any) => void;
+    }) => void;
+  };
 }
 
 export type IMethodProps<REQ = any, RES = any> = {

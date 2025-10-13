@@ -9,6 +9,7 @@ import contact_usRouter from "./contact-us/contact_us.router";
 import orderRouter from "./order/order.router";
 import productsRouter from "./products/products.router";
 import iconsRouter from "./icons/icons.router";
+import sectionsRouter from "./sections/sections.router";
 
 const AdminRouter = new AppRouter();
 
@@ -30,5 +31,7 @@ AdminRouter.use("/orders", orderRouter);
 
 AdminRouter.use("/products", productsRouter);
 AdminRouter.use("/icons", iconsRouter);
+
+AdminRouter.use("/sections", sectionsRouter);
 
 export default AdminRouter.getRouter();

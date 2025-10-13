@@ -1,11 +1,9 @@
 import { ISection, ISectionCU } from "@src/models/section/Sections.model";
 import { IPage } from "@src/models/page/Page.model";
 
-export interface IGetSection {
-  REQUEST: {
-    _id: IPage;
-  };
-  RESPONSE: IPage["sections"];
+export interface IGetSections {
+  REQUEST: {};
+  RESPONSE: ISection[];
 }
 
 export interface IUpdateSection {
@@ -18,20 +16,19 @@ export interface IUpdateSection {
 
 export interface ICreateSection {
   REQUEST: {
-    _id: IPage["_id"];
+    // page_id: IPage["id"];
     type: string;
     isActive: boolean;
     name: string;
     page: string;
     components: any;
   };
-  RESPONSE: IPage;
+  RESPONSE: ISection;
 }
 
 export interface IDeleteSection {
   REQUEST: {
-    _id: IPage["_id"];
-    _section_id: ISection["_id"];
+    _id: ISection["_id"];
   };
   RESPONSE: ISection;
 }

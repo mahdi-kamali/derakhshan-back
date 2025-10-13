@@ -10,8 +10,9 @@ import {
   Response,
 } from "express";
 import { StatusCodes } from "http-status-codes";
+import fs from "fs";
+import { STORAGE_PATH } from "@src/common/constants/Paths";
 
-import loadesh from "lodash";
 export class AppRouter {
   private router: ExpressRouter;
 
@@ -35,6 +36,18 @@ export class AppRouter {
         },
         encode(data) {
           return JWT.EncodeJWT(data);
+        },
+      },
+      fileSystem: {
+        deleteFile(props) {
+          const { onFail, onSuccess, path } = props;
+          const absolutePath = STORAGE_PATH(path);
+          if (fs.existsSync(absolutePath)) {
+            fs.unlinkSync(absolutePath);
+            onSuccess();
+          } else {
+            onFail("File path not eixst");
+          }
         },
       },
     };

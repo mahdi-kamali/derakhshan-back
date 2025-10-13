@@ -1,4 +1,5 @@
 import { IPage } from "@src/models/page/Page.model";
+import { ISection } from "@src/models/section/Sections.model";
 
 export interface IGetPages {
   REQUEST: {};
@@ -35,6 +36,14 @@ export interface IUpdatePage {
     status: "draft" | "published" | "stopped";
   };
   RESPONSE: IPage;
+}
+
+export interface IAddSectionToPage {
+  REQUEST: {
+    _id: IPage["_id"];
+    section_id: ISection["_id"];
+  };
+  RESPONSE: {};
 }
 
 export interface IDeletePage {

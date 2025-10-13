@@ -1,9 +1,11 @@
 import { AppRouter } from "@src/base/AppRouter";
+import { BASE_DIR, STORAGE_PATH } from "@src/common/constants/Paths";
 import FileModel, { IFile } from "@src/models/file/File.model";
 import GalleryModel, {
   IAddImage,
   IGallery,
 } from "@src/models/gallery/Gallery.model";
+import { IDeleteImage } from "./image.types";
 
 const ImageRouter = new AppRouter();
 
@@ -82,53 +84,48 @@ ImageRouter.POST<IAddImage, IFile[]>({
   },
 });
 
-ImageRouter.DELETE<
-  {
-    gallery_id: IGallery["_id"];
-    _id: IFile["_id"];
-  },
-  void
->({
+// Delete Image
+ImageRouter.DELETE<IDeleteImage["REQUEST"], IDeleteImage["RESPONSE"]>({
   path: "/",
   async onStart(data, { onError }, utils) {
     const { _id, gallery_id } = data;
-
-    if (!_id)
-      throw onError({
-        data: "_id الزامی است",
-        message: "خطایی رخ داده است",
-        status: "BAD_REQUEST",
+    const image = await FileModel.findById(_id);
+    if (image === null) {
+      onError({
+        data: "عکس مورد نظر پیدا نشد",
+        status: "NOT_FOUND",
       });
-    if (!gallery_id)
-      throw onError({
-        data: "gallery_id الزامی است",
-        message: "خطایی رخ داده است",
-        status: "BAD_REQUEST",
-      });
-  },
-  async onProccess(data, { onError }, utils) {},
-  async onFinish(request, data, { onError }, utils) {
-    const { _id, gallery_id } = request;
-
+    }
     const gallery = await GalleryModel.findById(gallery_id);
-
     if (gallery === null)
       throw onError({
         data: "گالری پیدا نشد",
         message: "خطایی رخ داده است",
         status: "NOT_FOUND",
       });
+  },
+  async onProccess(data, { onError }, { fileSystem }) {
+    return data;
+  },
+  async onFinish(request, data, { onError }, { fileSystem }) {
+    const { _id, gallery_id } = request;
 
+    const image = await FileModel.findById(_id);
     await GalleryModel.updateOne({
       $pull: {
         images: { _id },
       },
     });
+    fileSystem.deleteFile({
+      path: image!!.path,
+      onFail(error) {},
+      async onSuccess() {},
+    });
 
     return {
-      data: undefined,
-      message: "عکس از گالری حذف شد.",
+      data: image,
       status: "OK",
+      message: "عکس با موفقیت حذف شد.",
     };
   },
 });

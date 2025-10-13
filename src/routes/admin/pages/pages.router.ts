@@ -1,12 +1,14 @@
 import { AppRouter } from "@src/base/AppRouter";
 import PagesModel from "@src/models/page/Page.model";
-import SectionsRouter from "./sections/sections.router";
-import { ICreatPage, IGetPageByID, IGetPages, IUpdatePage } from "./pages.type";
+import {
+  IAddSectionToPage,
+  ICreatPage,
+  IGetPageByID,
+  IGetPages,
+  IUpdatePage,
+} from "./pages.type";
 
 const PagesRouter = new AppRouter();
-
-// Sections
-PagesRouter.use("/:_id/sections", SectionsRouter);
 
 // List
 PagesRouter.GET<IGetPages["REQUEST"], IGetPages["RESPONSE"]>({
@@ -90,6 +92,45 @@ PagesRouter.PUT<IUpdatePage["REQUEST"], IUpdatePage["RESPONSE"]>({
     return {
       data: data,
       message: "صفحات با موفقیت دریافت شد.",
+      status: "ACCEPTED",
+    };
+  },
+});
+
+// Add Section To Page
+PagesRouter.PUT<IAddSectionToPage["REQUEST"], IAddSectionToPage["RESPONSE"]>({
+  path: "/:_id/add-section/:section_id",
+  async onStart(data, { onError }, utils) {
+    const { _id } = data;
+    const page = await PagesModel.findById(_id);
+    if (page === null) {
+      onError({
+        data: "صفحه مورد نظر پیدا نشد",
+        status: "NOT_FOUND",
+        message: "",
+      });
+    }
+  },
+  async onProccess(data, callBacks, utils) {
+    const { _id, section_id } = data;
+    const page = await PagesModel.findByIdAndUpdate(
+      _id,
+      {
+        $push: {
+          sections: section_id,
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    return page?.save!!;
+  },
+  async onFinish(request, data, callBacks, utils) {
+    return {
+      data: data,
+      message: "سکشن به صفحه اضافه شد",
       status: "ACCEPTED",
     };
   },

@@ -7,10 +7,10 @@ import imageRouter from "./image/image.router";
 
 const GalleryRouter = new AppRouter();
 
-
 // Images
 GalleryRouter.use("/images", imageRouter);
 
+// Get List
 GalleryRouter.GET<any, IGallery[]>({
   path: "/",
   async onStart(data, callBacks, utils) {},
@@ -27,6 +27,7 @@ GalleryRouter.GET<any, IGallery[]>({
   },
 });
 
+// Create
 GalleryRouter.POST<IGalleryCU, IGallery>({
   path: "/",
   async onStart(data, callBacks, utils) {},
@@ -43,6 +44,7 @@ GalleryRouter.POST<IGalleryCU, IGallery>({
   },
 });
 
+// Update
 GalleryRouter.PUT<IGallery, IGallery>({
   path: "/:_id",
   async onStart(data, callBacks, utils) {},
@@ -70,6 +72,7 @@ GalleryRouter.PUT<IGallery, IGallery>({
   },
 });
 
+// Delete Gallery
 GalleryRouter.DELETE<IGallery, IGallery>({
   path: "/:_id",
   async onStart(data, callBacks, utils) {},
