@@ -29,6 +29,7 @@ const CreateInitialSetting = async () => {
       email: "info@derakhshan.com",
       address: "Tehran, Iran",
       work_time: "Saturday - Thursday",
+      trusts: [],
     },
     FA: {
       socials: [
@@ -50,6 +51,7 @@ const CreateInitialSetting = async () => {
       email: "info@derakhshan.com",
       address: "تهران، ایران",
       work_time: "شنبه تا پنج‌شنبه",
+      trusts: [],
     },
   };
 

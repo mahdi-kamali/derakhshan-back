@@ -10,6 +10,7 @@ export const ServerMiddleWres = {
       res: Response,
       next: NextFunction,
     ) => {
+      console.log(err)
       const status = err?.status ? StatusCodes[err.status] : 500;
       res.status(status as any).json(err);
     },

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IFile } from "../file/File.model";
 
 interface ISocial {
   label: string;
@@ -12,6 +13,11 @@ interface ILink {
   href: string;
 }
 
+interface ITrust {
+  image: IFile;
+  href: string;
+}
+
 export interface ISiteSettings {
   siteName: "derakhshan";
   EN: {
@@ -21,6 +27,7 @@ export interface ISiteSettings {
     email: string;
     address: string;
     work_time: string;
+    trusts: ITrust[];
   };
   FA: {
     socials: ISocial[];
@@ -29,6 +36,7 @@ export interface ISiteSettings {
     email: string;
     address: string;
     work_time: string;
+    trusts: ITrust[];
   };
 }
 
