@@ -5,6 +5,7 @@ import orderRouter from "./order/order.router";
 import productsRouter from "./products/products.router";
 import navsRouter from "./navs/navs.router";
 import careersRouter from "./careers/careers.router";
+import site_settingsRouter from "./site-settings/site_settings.router";
 
 const PublicRouter = new AppRouter();
 
@@ -14,5 +15,6 @@ PublicRouter.use("/order", orderRouter);
 PublicRouter.use("/products", productsRouter);
 PublicRouter.use("/navs", navsRouter);
 PublicRouter.use("/careers", careersRouter);
+PublicRouter.use("/site-settings", site_settingsRouter);
 
 export default PublicRouter.getRouter();
