@@ -12,6 +12,7 @@ import {
 import { StatusCodes } from "http-status-codes";
 import fs from "fs";
 import { STORAGE_PATH } from "@src/common/constants/Paths";
+import lodash from "lodash";
 
 export class AppRouter {
   private router: ExpressRouter;
@@ -61,10 +62,6 @@ export class AppRouter {
         return next();
       }
 
-      const { fields } = multer;
-
-      const finalFiles: any = {};
-
       const files = (request.files as Express.Multer.File[]).map((file) => {
         return {
           ...file,
@@ -72,18 +69,14 @@ export class AppRouter {
         };
       });
 
-      const normalize = (name: string) => name.replace(/\[\]$/, "");
+      const normalize = (name: string) =>
+        name.replace("[", ".").replace("]", ""); // normalize FA[image] => FA.image
 
-      fields.map((field) => {
-        const temp = files.filter(
-          (file) => normalize(field.name) === normalize(file.fieldname),
-        );
-        finalFiles[field.name] = field.count === 1 ? temp[0] : temp;
-        // loadesh.set(finalFiles, field.name, field.count === 1 ? temp[0] : temp);
+      files.map((file) => {
+        const { fieldname } = file;
+        lodash.set(request.body, normalize(fieldname), file);
       });
-
-      request.files = finalFiles;
-
+      request.files = [];
       return next();
     };
 
@@ -92,12 +85,13 @@ export class AppRouter {
       response: Response,
       next: NextFunction,
     ) => {
-      const data = {
-        ...request.body,
-        ...request.params,
-        ...request.query,
-        ...request.files,
-      };
+      const data = lodash.merge(
+        {},
+        request.body,
+        request.params,
+        request.query,
+        request.files,
+      );
 
       await onStart(data, CallBacks, Utills);
       return next();

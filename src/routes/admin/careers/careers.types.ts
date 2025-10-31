@@ -5,8 +5,6 @@ export interface ICreateCareer {
   RESPONSE: ICareer;
 }
 
-
-
 export interface IUpdateCareer {
   REQUEST: ICareer;
   RESPONSE: ICareer;

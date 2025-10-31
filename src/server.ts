@@ -13,8 +13,6 @@ const app = express();
 const storagePath = path.join(process.cwd(), "storage");
 app.use("/storage", express.static(storagePath));
 
-console.log(storagePath);
-
 // Basic middleware
 app.use(CorsMiddleWare.any);
 app.use(express.json());

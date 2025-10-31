@@ -2,7 +2,7 @@
   "name": "derakhshan-back",
   "version": "0.0.0",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development dotenv -e .env.development -- npx nodemon src/index.ts",
+    "dev": "cross-env NODE_ENV=development dotenv -e .env.production -- npx nodemon src/index.ts",
     "start": "npm run deploy && cross-env NODE_ENV=production dotenv -e .env.production -- node dist/src/index.js",
     "pull": "git pull origin main",
     "build": "tsc && tsc-alias",

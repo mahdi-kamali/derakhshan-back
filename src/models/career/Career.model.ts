@@ -7,6 +7,28 @@ enum TYPE {
 }
 
 export interface ICareer {
+  _id: mongoose.ObjectId;
+  EN: {
+    title: string;
+    skills: string[];
+    description: string;
+    isActive: boolean;
+    image: IFile;
+    _id?: mongoose.ObjectId;
+    type: TYPE;
+  };
+  FA: {
+    title: string;
+    skills: string[];
+    description: string;
+    isActive: boolean;
+    image: IFile;
+    _id?: mongoose.ObjectId;
+    type: TYPE;
+  };
+}
+
+interface IData {
   title: string;
   skills: string[];
   description: string;
@@ -16,32 +38,45 @@ export interface ICareer {
   type: TYPE;
 }
 
+const DataModel = new mongoose.Schema<IData>({
+  title: {
+    type: String,
+    required: [true, "عنوان الزامی میباشد"],
+    trim: true,
+  },
+  skills: {
+    type: [String],
+    default: [],
+  },
+  description: {
+    type: String,
+    required: [true, "توضیحات الزامی میباشد"],
+    trim: true,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
+  image: {
+    type: FileSchema,
+    required: [true, "تصویر الزامی میباشد"],
+  },
+  type: {
+    type: String,
+    enum: Object.values(TYPE),
+    default: TYPE.NORMAL,
+  },
+});
+
 const CareerModel = new mongoose.Schema<ICareer>(
   {
-    title: {
-      type: String,
-      required: [true, "عنوان آگهی مورد نیاز است."],
+    EN: {
+      type: DataModel,
+      required: [true, "لطفا زبان انگلیسی را پر کنید"],
     },
-    skills: {
-      type: [String],
-      default: [],
-    },
-    description: {
-      type: String,
-      required: [true, "توضیحات الزامی میباشد. "],
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-    image: {
-      type: FileSchema,
-      required: [true, "عکس الزامی است"],
-    },
-    type: {
-      type: String,
-      enum: TYPE,
-      default: TYPE.NORMAL,
+    FA: {
+      type: DataModel,
+      required: [true, "لطفا زبان فارسی را پر کنید"],
     },
   },
   {

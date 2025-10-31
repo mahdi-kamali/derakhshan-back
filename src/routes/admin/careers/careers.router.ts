@@ -57,7 +57,11 @@ CareersRouter.POST<ICreateCareer["REQUEST"], ICreateCareer["RESPONSE"]>({
     fields: [
       {
         count: 1,
-        name: "image",
+        name: "FA.image",
+      },
+      {
+        count: 1,
+        name: "EN.image",
       },
     ],
   },
@@ -81,9 +85,7 @@ CareersRouter.DELETE<IDeleteCareer["REQUEST"], IDeleteCareer["RESPONSE"]>({
   async onProccess(data, { onError }, utils) {
     const { _id } = data;
     const career = await CareerModel.findByIdAndDelete(_id, { new: true });
-    SectionsModel.find({
-      
-    })
+    SectionsModel.find({});
     if (career === null) {
       onError({
         data: "آگهی پیدا نشد",

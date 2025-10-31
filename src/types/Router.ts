@@ -43,7 +43,7 @@ export type IMethodProps<REQ = any, RES = any> = {
       | "careers"
       | "orders"
       | "products";
-    fields: {
+    fields?: {
       name: string;
       count: number;
     }[];
