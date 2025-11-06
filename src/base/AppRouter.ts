@@ -13,6 +13,7 @@ import { StatusCodes } from "http-status-codes";
 import fs from "fs";
 import { STORAGE_PATH } from "@src/common/constants/Paths";
 import lodash from "lodash";
+import { IFile } from "@src/models/file/File.model";
 
 export class AppRouter {
   private router: ExpressRouter;
@@ -69,13 +70,35 @@ export class AppRouter {
         };
       });
 
-      const normalize = (name: string) =>
-        name.replace("[", ".").replace("]", ""); // normalize FA[image] => FA.image
+      // console.log("from multer => " ,files)
 
-      files.map((file) => {
+      const normalize = (name: string) => {
+        const removeBarackets = name.replace("[", ".").replace("]", "");
+        const removeDot = removeBarackets.endsWith(".")
+          ? removeBarackets.substring(0, removeBarackets.length - 1)
+          : removeBarackets;
+        return removeDot;
+      }; // normalize FA[image] => FA.image
+
+      files.forEach((file) => {
         const { fieldname } = file;
+
+        const targetField = multer.fields?.find(
+          (multerField) => multerField.name === normalize(fieldname),
+        );
+
+        if (targetField === undefined) return;
+
+        if (targetField.count > 1) {
+          const temp: IFile[] = [];
+          files.forEach((file) => temp.push(file));
+          lodash.set(request.body, normalize(fieldname), temp);
+          return;
+        }
+
         lodash.set(request.body, normalize(fieldname), file);
       });
+
       request.files = [];
       return next();
     };

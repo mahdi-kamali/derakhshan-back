@@ -1,14 +1,17 @@
 import { AppRouter } from "@src/base/AppRouter";
-import CareerModel from "@src/models/career/Career.model";
+import CareerSchema from "@src/models/career/Career.model";
 import { IGetCareer } from "@src/routes/admin/careers/careers.types";
+import CareerApplyRouter from "./apply/CareerApply.router";
 
 const CareersRouter = new AppRouter();
+
+CareersRouter.use("/apply", CareerApplyRouter);
 
 CareersRouter.GET<IGetCareer["REQUEST"], IGetCareer["RESPONSE"]>({
   path: "/",
   async onStart(data, callBacks, utils) {},
   async onProccess(data, callBacks, utils) {
-    const careers = await CareerModel.find();
+    const careers = await CareerSchema.find();
     return careers;
   },
   async onFinish(request, data, callBacks, utils) {
@@ -19,4 +22,5 @@ CareersRouter.GET<IGetCareer["REQUEST"], IGetCareer["RESPONSE"]>({
     };
   },
 });
+
 export default CareersRouter.getRouter();

@@ -5,7 +5,7 @@ import GalleryModel, {
   IAddImage,
   IGallery,
 } from "@src/models/gallery/Gallery.model";
-import { IDeleteImage } from "./image.types";
+import { IDeleteImage, IPostAddImage } from "./image.types";
 
 const ImageRouter = new AppRouter();
 
@@ -27,7 +27,7 @@ ImageRouter.GET<any, IFile[]>({
 });
 
 // Add Image
-ImageRouter.POST<IAddImage, IFile[]>({
+ImageRouter.POST<IPostAddImage["REQUEST"], IPostAddImage["RESPONSE"]>({
   path: "/",
   multer: {
     directory: "gallery",
@@ -58,13 +58,14 @@ ImageRouter.POST<IAddImage, IFile[]>({
         status: "BAD_REQUEST",
       });
 
-    return data.images;
+    return data;
   },
   async onFinish(request, data, callBacks, utils) {
     const { gallery_id } = request;
 
+    request.images;
     const images = await Promise.all(
-      data.map(async (image) => {
+      request.images.map(async (image) => {
         const newImage = new FileModel(image);
         return await newImage.save();
       }),

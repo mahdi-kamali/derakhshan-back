@@ -68,7 +68,7 @@ const DataModel = new mongoose.Schema<IData>({
   },
 });
 
-const CareerModel = new mongoose.Schema<ICareer>(
+export const CareerSchema = new mongoose.Schema<ICareer>(
   {
     EN: {
       type: DataModel,
@@ -84,4 +84,4 @@ const CareerModel = new mongoose.Schema<ICareer>(
   },
 );
 
-export default mongoose.model<ICareer>("Career", CareerModel);
+export default mongoose.model<ICareer>("Career", CareerSchema);
