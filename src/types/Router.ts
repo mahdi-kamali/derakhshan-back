@@ -42,7 +42,8 @@ export type IMethodProps<REQ = any, RES = any> = {
       | "categories"
       | "careers"
       | "orders"
-      | "products";
+      | "products"
+      | "careers/applys";
     fields?: {
       name: string;
       count: number;

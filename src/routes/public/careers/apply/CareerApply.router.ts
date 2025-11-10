@@ -7,9 +7,22 @@ const CareerApply = new AppRouter();
 
 CareerApply.POST<IPostCarrerApply["REQUEST"], IPostCarrerApply["RESPONSE"]>({
   path: "/:career_id",
+  multer: {
+    directory: "careers/applys",
+    fields: [
+      {
+        count: 1,
+        name: "uploads.resume",
+      },
+      {
+        count: 1,
+        name: "uploads.organizationImage",
+      },
+    ],
+  },
   async onStart(data, { onError }, utils) {
     const career = await CareerModel.findById(data.career_id);
-    
+
     if (career === null) {
       onError({
         data: "آگهی پیدا نشد",

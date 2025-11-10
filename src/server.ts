@@ -18,7 +18,7 @@ app.use(CorsMiddleWare.any);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 
 app.use("/api", ApiRouter);
 

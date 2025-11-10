@@ -1,4 +1,3 @@
-import { ICareerApply } from "@src/models/career/applys/CareerApply.model";
 import { ICareer } from "@src/models/career/Career.model";
 
 export interface ICreateCareer {
@@ -34,6 +33,6 @@ export interface IDeleteCareer {
 }
 
 export interface IPostCarrerApply {
-  REQUEST: ICareerApply;
-  RESPONSE: ICareerApply;
+  REQUEST: any;
+  RESPONSE: any;
 }
