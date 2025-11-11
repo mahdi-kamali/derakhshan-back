@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 
 export interface IUploads {
   resume?: IFile;
-  organizationImage?: IFile;
+  organization?: IFile;
 }
 
 export const UploadsSchema = new mongoose.Schema<IUploads>(
   {
     resume: { type: FileSchema },
-    organizationImage: { type: FileSchema },
+    organization: { type: FileSchema },
   },
   { _id: false },
 );
