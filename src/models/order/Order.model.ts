@@ -13,7 +13,8 @@ export interface IOrder extends Document {
     name: string;
     family: string;
     phone: string;
-    email :string
+    email: string;
+    country: string;
   };
   companyName: string;
   industry: INDUSTRY_ENUM;
@@ -28,7 +29,7 @@ export interface IOrder extends Document {
       height: number;
     };
   };
-  description : string
+  description: string;
 }
 
 const OrdersSchema = new Schema<IOrder>(
@@ -38,6 +39,7 @@ const OrdersSchema = new Schema<IOrder>(
       family: { type: String, required: [true, "نام خانوادگی الزامی است"] },
       phone: { type: String, required: [true, "شماره تماس الزامی است"] },
       email: { type: String, required: [true, "ایمیل  الزامی است"] },
+      country: { type: String, required: [true, "کشور الزامی است"] },
     },
     companyName: { type: String, required: [true, "نام شرکت الزامی است"] },
     industry: {
@@ -60,10 +62,10 @@ const OrdersSchema = new Schema<IOrder>(
         height: { type: Number, required: [true, "ارتفاع محصول الزامی است"] },
       },
     },
-    description : {
-      type : String,
-      required : [true , "توضیحات الزامی است"]
-    }
+    description: {
+      type: String,
+      required: [true, "توضیحات الزامی است"],
+    },
   },
   {
     timestamps: true,
