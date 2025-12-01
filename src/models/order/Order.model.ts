@@ -39,7 +39,7 @@ const OrdersSchema = new Schema<IOrder>(
       family: { type: String, required: [true, "نام خانوادگی الزامی است"] },
       phone: { type: String, required: [true, "شماره تماس الزامی است"] },
       email: { type: String, required: [true, "ایمیل  الزامی است"] },
-      country: { type: String, required: [true, "کشور الزامی است"] },
+      country: { type: String,default : "ایران" },
     },
     companyName: { type: String, required: [true, "نام شرکت الزامی است"] },
     industry: {

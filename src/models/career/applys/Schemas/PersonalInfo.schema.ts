@@ -12,6 +12,7 @@ export interface IPersonalInfo {
   fatherJob?: string;
   insuranceHistory?: string;
   phoneNumber?: string;
+  gender: "male" | "female";
 }
 
 export const PersonalInfoSchema = new mongoose.Schema<IPersonalInfo>(
@@ -27,6 +28,7 @@ export const PersonalInfoSchema = new mongoose.Schema<IPersonalInfo>(
     fatherJob: { type: String },
     insuranceHistory: { type: String },
     phoneNumber: { type: String },
+    gender: { type: String },
   },
   { _id: false },
 );
