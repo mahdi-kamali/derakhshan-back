@@ -6,6 +6,7 @@ import productsRouter from "./products/products.router";
 import navsRouter from "./navs/navs.router";
 import careersRouter from "./careers/careers.router";
 import site_settingsRouter from "./site-settings/site_settings.router";
+import { ReCaptchaMiddleWare } from "@src/middlewares/recpatcha.middlewares";
 
 const PublicRouter = new AppRouter();
 

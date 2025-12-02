@@ -1,8 +1,11 @@
 import { AppRouter } from "@src/base/AppRouter";
 import { IGetOrder, IPostOrder } from "./order.types";
 import OrderModel from "@src/models/order/Order.model";
+import { ReCaptchaMiddleWare } from "@src/middlewares/recpatcha.middlewares";
 
 const OrderRouter = new AppRouter();
+
+OrderRouter.use("", ReCaptchaMiddleWare);
 
 OrderRouter.POST<IPostOrder["REQUEST"], IPostOrder["RESPONSE"]>({
   path: "/",
