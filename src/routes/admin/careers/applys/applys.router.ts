@@ -7,7 +7,7 @@ ApplysRouter.GET({
   path: "/",
   async onStart(data, callBacks, utils) {},
   async onProccess(data, callBacks, utils) {
-    const applys = CareerApplyModel.find();
+    const applys = CareerApplyModel.find().populate("career_id");
     return applys;
   },
   async onFinish(request, data, callBacks, utils) {
@@ -19,4 +19,4 @@ ApplysRouter.GET({
   },
 });
 
-ApplysRouter.getRouter();
+export default ApplysRouter.getRouter();

@@ -8,8 +8,11 @@ import {
 } from "./careers.types";
 import CareerModel from "@src/models/career/Career.model";
 import SectionsModel from "@src/models/section/Sections.model";
+import ApplysRouter from "./applys/applys.router";
 
 const CareersRouter = new AppRouter();
+
+CareersRouter.use("/applys", ApplysRouter);
 
 CareersRouter.GET<IGetCareer["REQUEST"], IGetCareer["RESPONSE"]>({
   path: "/",
@@ -144,7 +147,5 @@ CareersRouter.PUT<IUpdateCareer["REQUEST"], IUpdateCareer["RESPONSE"]>({
     };
   },
 });
-
-
 
 export default CareersRouter.getRouter();
