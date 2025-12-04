@@ -32,6 +32,12 @@ CareerApply.POST<IPostCarrerApply["REQUEST"], IPostCarrerApply["RESPONSE"]>({
   },
   async onProccess(data, callBacks, utils) {
     const apply = new ApplysModel(data);
+    const careersBeforeApplyed = await ApplysModel.find({
+      _id : apply.career_id
+    })
+
+    return careersBeforeApplyed
+
     return await apply.save();
   },
   async onFinish(request, data, callBacks, utils) {
