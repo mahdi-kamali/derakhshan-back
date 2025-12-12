@@ -3,25 +3,6 @@ import { exec } from "child_process";
 
 const webHooksRouter = Router();
 
-// Projects configuration
-const projects = [
-  {
-    name: "derakhshan-back",
-    dir: "/home/dppackde/derakhshan-back",
-    deployScript: "deploy",
-  },
-  {
-    name: "derakhshan-front",
-    dir: "/home/dppackde/derakhshan-front",
-    deployScript: "deploy",
-  },
-  {
-    name: "derakhshan-penel",
-    dir: "/home/dppackde/derakhshan-penel",
-    deployScript: "deploy",
-  },
-];
-
 // Helper to run shell commands
 const runCommand = (cmd: string, cwd: string): Promise<string> => {
   return new Promise((resolve, reject) => {
