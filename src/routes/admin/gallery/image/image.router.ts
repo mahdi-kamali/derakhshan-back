@@ -112,11 +112,21 @@ ImageRouter.DELETE<IDeleteImage["REQUEST"], IDeleteImage["RESPONSE"]>({
     const { _id, gallery_id } = request;
 
     const image = await FileModel.findById(_id);
-    await GalleryModel.updateOne({
+
+    const gallery = await GalleryModel.findById(gallery_id);
+
+    await gallery!!.updateOne({
       $pull: {
         images: { _id },
       },
     });
+
+    // await GalleryModel.updateOne({
+    //   $pull: {
+    //     images: { _id },
+    //   },
+    // });
+
     fileSystem.deleteFile({
       path: image!!.path,
       onFail(error) {},
