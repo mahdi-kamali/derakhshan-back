@@ -15,9 +15,7 @@ OrderRouter.POST<IPostOrder["REQUEST"], IPostOrder["RESPONSE"]>({
       },
     ],
   },
-  async onStart(data, callBacks, utils) {
-    console.log(data);
-  },
+  async onStart(data, callBacks, utils) {},
   async onProccess(data, callBacks, utils) {
     const order = new OrderModel(data);
     return await order.save();
